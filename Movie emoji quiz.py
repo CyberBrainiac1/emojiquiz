@@ -14,7 +14,7 @@ while True:
     answer = input("Enter your choice: ").strip().lower()
 
     if answer == "kids movies":
-        print("You chose Kids movies 🎬")
+        print("You chose Kids movies 🎬") 
         movie_list = [
             (("🐭", "🧀"), "Ratatouille"),
             (("🦁", "👑"), "The Lion King"),
