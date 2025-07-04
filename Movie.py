@@ -2,13 +2,9 @@ import random
 import time
 while True:
     print("\nHi!")
-    time.sleep(1)
     print("Welcome to the Movie Emoji Quiz 🎥")
-    time.sleep(1)
     print("You will be given 2 emojis and will have to guess the movie.")
-    time.sleep(1)
     print("You have 3 attempts to guess correctly. Good luck!")
-    time.sleep(1)
     print("Choose a category: Kids movies, Teens movies, or Adult movies")
 
     answer = input("Enter your choice: ").strip().lower()
