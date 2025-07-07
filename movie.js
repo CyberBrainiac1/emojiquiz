@@ -1,7 +1,7 @@
 // Movie Emoji Quiz - Chat Integrated Version
 
 const categories = {
-  'kids movies': [
+  'kids': [
     [['🐭', '🧀'], 'Ratatouille'],
     [['🦁', '👑'], 'The Lion King'],
     [['🧚', '✨'], 'Tinker Bell'],
@@ -13,7 +13,7 @@ const categories = {
     [['🧸', '🚀'], 'Toy Story'],
     [['🌮', '🎸'], 'Coco'],
   ],
-  'teens movies': [
+  'teens': [
     [['🧛‍♂️', '💔'], 'Twilight'],
     [['🏹', '🔥'], 'The Hunger Games'],
     [['🎤', '🎶'], 'Pitch Perfect'],
@@ -23,7 +23,7 @@ const categories = {
     [['🛹', '👊'], 'Scott Pilgrim vs. the World'],
     [['🎮', '👾'], 'Ready Player One'],
   ],
-  'adult movies': [
+  'adult': [
     [['🕵️‍♂️', '🎞️'], 'Inception'],
     [['🤯', '🧠'], 'Interstellar'],
     [['🔪', '🚿'], 'Psycho'],
