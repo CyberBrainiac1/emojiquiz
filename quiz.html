@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Simple Chat Interface</title>
+    <title>Simple Emoji Quiz</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 </head>
@@ -10,15 +10,22 @@
     <div id="chat-container">
         <div id="chat-box"></div>
         <div id="input-area">
-            <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off" />
+            <input type="text" id="user-input" placeholder="Type your answer..." autocomplete="off" />
             <button id="send-btn">Send</button>
         </div>
     </div>
+    <div id="quiz-select" style="text-align:center; margin-bottom: 10px;">
+        <button id="movie-quiz-btn">Movie Emoji Quiz</button>
+        <button id="games-quiz-btn">Games Emoji Quiz</button>
+    </div>
     <script src="movie.js"></script>
+    <script src="games.js"></script>
     <script>
         const chatBox = document.getElementById('chat-box');
         const userInput = document.getElementById('user-input');
         const sendBtn = document.getElementById('send-btn');
+        const movieQuizBtn = document.getElementById('movie-quiz-btn');
+        const gamesQuizBtn = document.getElementById('games-quiz-btn');
 
         function appendMessage(sender, text) {
             const msgDiv = document.createElement('div');
@@ -28,43 +35,52 @@
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
-        let quizMode = false;
         let quizInstance = null;
+
+        function clearChat() {
+            chatBox.innerHTML = '';
+        }
+
+        function startQuiz(type) {
+            clearChat();
+            if (type === 'movie') {
+                quizInstance = new window.MovieQuiz(appendMessage);
+            } else if (type === 'games') {
+                quizInstance = new window.GamesQuiz(appendMessage);
+            }
+            quizInstance.start();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            quizInstance = null;
+            clearChat();
+            appendMessage('zeBot', 'Welcome! Please select a quiz to begin: <b>Movie Emoji Quiz</b> or <b>Games Emoji Quiz</b>.');
+        });
+
+        function tryQuizSelection(text) {
+            const lower = text.trim().toLowerCase();
+            if (lower.includes('movie')) {
+                startQuiz('movie');
+                return true;
+            } else if (lower.includes('game')) {
+                startQuiz('games');
+                return true;
+            }
+            return false;
+        }
 
         function sendMessage() {
             const text = userInput.value.trim();
             if (text === '') return;
+            if (!quizInstance) {
+                if (tryQuizSelection(text)) return;
+                appendMessage('zeBot', 'Please select a quiz to begin: <b>Movie Emoji Quiz</b> or <b>Games Emoji Quiz</b>.');
+                userInput.value = '';
+                return;
+            }
             appendMessage('user', text);
             userInput.value = '';
-            if (quizMode && quizInstance) {
-                if (text.toLowerCase() === 'exit quiz') {
-                    appendMessage('zeBot', 'Quiz exited. You can start again anytime.');
-                    quizMode = false;
-                    quizInstance = null;
-                    return;
-                }
-                quizInstance.handleInput(text);
-            } else {
-                backendReply(text);
-            }
-        }
-
-        async function backendReply(userText) {
-            // Replace '/chat' with your backend endpoint
-            try {
-                const response = await fetch('/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: userText })
-                });
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                appendMessage('zeBot', data.reply || '[No reply]');
-            } catch (error) {
-                appendMessage('zeBot', 'Error: Could not reach backend.');
-            }
+            quizInstance.handleInput(text);
         }
 
         sendBtn.addEventListener('click', sendMessage);
@@ -72,11 +88,11 @@
             if (e.key === 'Enter') sendMessage();
         });
 
-        // Start the quiz automatically on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            quizMode = true;
-            quizInstance = new window.MovieQuiz(appendMessage);
-            quizInstance.start();
+        movieQuizBtn.addEventListener('click', function() {
+            startQuiz('movie');
+        });
+        gamesQuizBtn.addEventListener('click', function() {
+            startQuiz('games');
         });
     </script>
 </body>
