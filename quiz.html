@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Chat Interface</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-box"></div>
+        <div id="input-area">
+            <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off" />
+            <button id="send-btn">Send</button>
+        </div>
+    </div>
+    <script src="movie.js"></script>
+    <script>
+        const chatBox = document.getElementById('chat-box');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+
+        function appendMessage(sender, text) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message ' + sender;
+            msgDiv.innerHTML = `<strong>${sender === 'user' ? 'You' : 'zeBot'}:</strong> ${text}`;
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        let quizMode = false;
+        let quizInstance = null;
+
+        function sendMessage() {
+            const text = userInput.value.trim();
+            if (text === '') return;
+            appendMessage('user', text);
+            userInput.value = '';
+            if (quizMode && quizInstance) {
+                if (text.toLowerCase() === 'exit quiz') {
+                    appendMessage('zeBot', 'Quiz exited. You can start again anytime.');
+                    quizMode = false;
+                    quizInstance = null;
+                    return;
+                }
+                quizInstance.handleInput(text);
+            } else {
+                backendReply(text);
+            }
+        }
+
+        async function backendReply(userText) {
+            // Replace '/chat' with your backend endpoint
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: userText })
+                });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                appendMessage('zeBot', data.reply || '[No reply]');
+            } catch (error) {
+                appendMessage('zeBot', 'Error: Could not reach backend.');
+            }
+        }
+
+        sendBtn.addEventListener('click', sendMessage);
+        userInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        // Start the quiz automatically on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            quizMode = true;
+            quizInstance = new window.MovieQuiz(appendMessage);
+            quizInstance.start();
+        });
+    </script>
+</body>
+</html>
+
