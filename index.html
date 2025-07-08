@@ -16,6 +16,7 @@
 </head>
 <body>
     <div id="author-label">By: Cyberbrainiac1</div>
+    <div id="progress">This work is still under development</div>
     <div id="chat-container">
         <div id="chat-box"></div>
         <div id="input-area">
@@ -26,15 +27,21 @@
     <div id="quiz-select" style="text-align:center; margin-bottom: 10px;">
         <button id="movie-quiz-btn">Movie Emoji Quiz</button>
         <button id="games-quiz-btn">Games Emoji Quiz</button>
+        <button id="indian-movie-quiz-btn">Indian Movie Emoji Quiz</button>
+        <button id="indian-tv-quiz-btn">Indian TV Emoji Quiz</button>
     </div>
     <script src="movie.js"></script>
     <script src="games.js"></script>
+    <script src="indian_movie.js"></script>
+    <script src="indian_tv.js"></script>
     <script>
         const chatBox = document.getElementById('chat-box');
         const userInput = document.getElementById('user-input');
         const sendBtn = document.getElementById('send-btn');
         const movieQuizBtn = document.getElementById('movie-quiz-btn');
         const gamesQuizBtn = document.getElementById('games-quiz-btn');
+        const indianMovieQuizBtn = document.getElementById('indian-movie-quiz-btn');
+        const indianTVQuizBtn = document.getElementById('indian-tv-quiz-btn');
 
         function appendMessage(sender, text) {
             const msgDiv = document.createElement('div');
@@ -56,6 +63,10 @@
                 quizInstance = new window.MovieQuiz(appendMessage);
             } else if (type === 'games') {
                 quizInstance = new window.GamesQuiz(appendMessage);
+            } else if (type === 'indian-movie') {
+                quizInstance = new window.IndianMovieQuiz(appendMessage);
+            } else if (type === 'indian-tv') {
+                quizInstance = new window.IndianTVQuiz(appendMessage);
             }
             quizInstance.start();
         }
@@ -63,7 +74,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             quizInstance = null;
             clearChat();
-            appendMessage('zeBot', 'Welcome! Please select a quiz to begin: <b>Movie Emoji Quiz</b> or <b>Games Emoji Quiz</b>.');
+            appendMessage('zeBot', 'Welcome! Please select a quiz to begin: <b>Movie Emoji Quiz</b>, <b>Games Emoji Quiz</b>, <b>Indian Movie Emoji Quiz</b>, or <b>Indian TV Emoji Quiz</b>.');
         });
 
         function tryQuizSelection(text) {
@@ -74,6 +85,12 @@
             } else if (lower.includes('game')) {
                 startQuiz('games');
                 return true;
+            } else if (lower.includes('indian') || lower.includes('bollywood')) {
+                startQuiz('indian-movie');
+                return true;
+            } else if (lower.includes('tv') || lower.includes('television')) {
+                startQuiz('indian-tv');
+                return true;
             }
             return false;
         }
@@ -83,7 +100,7 @@
             if (text === '') return;
             if (!quizInstance) {
                 if (tryQuizSelection(text)) return;
-                appendMessage('zeBot', 'Please select a quiz to begin: <b>Movie Emoji Quiz</b> or <b>Games Emoji Quiz</b>.');
+                appendMessage('zeBot', 'Please select a quiz to begin: <b>Movie Emoji Quiz</b>, <b>Games Emoji Quiz</b>, <b>Indian Movie Emoji Quiz</b>, or <b>Indian TV Emoji Quiz</b>.');
                 userInput.value = '';
                 return;
             }
@@ -102,6 +119,12 @@
         });
         gamesQuizBtn.addEventListener('click', function() {
             startQuiz('games');
+        });
+        indianMovieQuizBtn.addEventListener('click', function() {
+            startQuiz('indian-movie');
+        });
+        indianTVQuizBtn.addEventListener('click', function() {
+            startQuiz('indian-tv');
         });
     </script>
 </body>
