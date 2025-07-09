@@ -87,9 +87,11 @@ class MovieQuiz {
         if (this.attempts > 0) {
           this.appendMessage('backend', `❌ Wrong! ${this.attempts} attempt(s) left. Please try again.`);
         } else {
-          this.appendMessage('backend', `❌ Out of tries. The correct answer was: <b>${this.correctAnswer}</b><br>Restarting game...`);
+          this.appendMessage('backend', `❌ Out of tries. The correct answer was: <b>${this.correctAnswer}</b><br>Taking you back to the main menu...`);
           this.reset();
-          this.start();
+          this.appendMessage('backend', 'Welcome! Please select a quiz to begin: <b>Movie Emoji Quiz</b>, <b>Games Emoji Quiz</b>, <b>Indian Movie Emoji Quiz</b>, or <b>Indian TV Emoji Quiz</b>.');
+          // Set quizInstance to null to go back to main menu
+          window.quizInstance = null;
         }
       }
       return;
