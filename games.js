@@ -1,7 +1,7 @@
 // Games Emoji Quiz - Chat Integrated Version
 
 const gameCategories = {
-  'classic': [
+  'classic games': [
     [['👾', '🛸'], 'Space Invaders'],
     [['🐍', '🍎'], 'Snake'],
     [['🧱', '🔨'], 'Breakout'],
@@ -13,7 +13,7 @@ const gameCategories = {
     [['🦍', '🏢'], 'Donkey Kong'],
     [['👦', '🌎'], 'EarthBound'],
   ],
-  'modern': [
+  'modern games': [
     [['🧟', '🔫'], 'The Last of Us'],
     [['🔫', '👑'], 'Fortnite'],
     [['🦸‍♂️', '🕷️'], 'Spider-Man'],
@@ -23,7 +23,7 @@ const gameCategories = {
     [['🦖', '🌋'], 'ARK: Survival Evolved'],
     [['👨‍🚀', '🌌'], "No Man's Sky"],
   ],
-  'party': [
+  'party games': [
     [['🎤', '🎶'], 'SingStar'],
     [['🎲', '🃏'], 'Mario Party'],
     [['🎮', '🏎️'], 'Mario Kart'],
